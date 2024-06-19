@@ -3,6 +3,10 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
@@ -10,9 +14,10 @@ datasource db {
 }
 
 model Trivia {
-  id           String   @id @default(cuid())
-  question     String
-  choices      String[]
-  answer_index Int
-  created_at   DateTime @default(now())
+  id String @id @default(cuid())
+
+  /// [TriviaQuestion]
+  questions Json[]
+
+  created_at DateTime @default(now())
 }

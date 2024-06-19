@@ -1,5 +1,7 @@
 import {getDailyTrivia} from "@/actions/trivia.action";
 
+export const dynamic = "force-dynamic";
+
 const Home = async () => {
   const dailyTrivia = await getDailyTrivia();
 
