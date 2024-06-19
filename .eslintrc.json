@@ -1,3 +1,60 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:eslint-comments/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "next/core-web-vitals"
+  ],
+  "plugins": ["@typescript-eslint", "import", "prettier", "eslint-comments"],
+  "rules": {
+    "import/no-named-as-default": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-param-reassign": ["error", {"props": false}],
+    "global-require": "off",
+    "no-use-before-define": "off",
+    "no-shadow": "off",
+    "quotes": "off",
+    "camelcase": "off",
+    "no-await-in-loop": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "import/no-extraneous-dependencies": ["error"],
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "lines-between-class-members": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-return": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "singleQuote": false
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "no-console": [
+      "error",
+      {
+        "allow": ["info", "warn", "error", "log"]
+      }
+    ]
+  }
 }
