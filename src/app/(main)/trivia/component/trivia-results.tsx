@@ -20,7 +20,7 @@ const TriviaResults = ({questionStats}: {questionStats: TriviaQuestionStat[]}) =
   }, [questionStats]);
 
   return (
-    <div>
+    <div onTouchMove={(e) => e.stopPropagation()}>
       <div className="text-5xl text-center font-medium">Results</div>
       <div className="flex justify-around mt-10">
         <div className="flex-col gap-6 justify-center relative w-[130px] md:w-[150px]">
