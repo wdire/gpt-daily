@@ -87,13 +87,20 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
   }: {
     optionIndex: number;
   }) => {
+    const newQuestonStatsLoading = [...questionStats];
+    newQuestonStatsLoading[currentQuestionIndex] = {
+      ...newQuestonStatsLoading[currentQuestionIndex],
+      selection: optionIndex,
+    };
+
+    setQuestionStats(newQuestonStatsLoading);
+
     const question = await triviaFn.getQuestion({
       questionIndex: currentQuestionIndex,
     });
 
     const newQuestonStats = [...questionStats];
     newQuestonStats[currentQuestionIndex] = {
-      ...newQuestonStats[currentQuestionIndex],
       correct: question.answer_index === optionIndex,
       selection: optionIndex,
       correctIndex: question.answer_index,
@@ -246,11 +253,17 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
                       currentQuestionIndex !== index,
                   })}
                 >
-                  <TriviaQuestion
-                    questionWithoutAnswer={question}
-                    triviaQuestionFn={triviaQuestionFn}
-                    questionStat={questionStats[index]}
-                  />
+                  {currentQuestionIndex === index ||
+                  currentQuestionIndex - 1 === index ||
+                  currentQuestionIndex + 1 === index ? (
+                    <TriviaQuestion
+                      questionWithoutAnswer={question}
+                      triviaQuestionFn={triviaQuestionFn}
+                      questionStat={questionStats[index]}
+                    />
+                  ) : (
+                    <div className="w-full"></div>
+                  )}
                 </div>
               ))}
             </div>

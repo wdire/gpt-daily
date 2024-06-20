@@ -41,13 +41,19 @@ const TriviaQuestion = ({
                 {
                   "hover:bg-yellow-400 hover:border-yellow-500 active:bg-yellow-500":
                     questionStat.selection === null,
-                  "opacity-60":
+
+                  "opacity-60 pointer-events-none":
                     questionStat.selection !== null &&
                     questionStat.selection !== index &&
                     questionStat.correctIndex !== index,
+
                   "!bg-green-500/80": questionStat.correctIndex === index,
 
-                  "!bg-red-500/80": questionStat.selection === index && !questionStat.correct,
+                  "bg-yellow-500":
+                    questionStat.selection === index && questionStat.correctIndex === null,
+
+                  "!bg-red-500/80":
+                    questionStat.selection === index && questionStat.correct === false,
                 },
               )}
               onClick={() => {
