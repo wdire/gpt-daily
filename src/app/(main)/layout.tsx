@@ -1,6 +1,8 @@
 import type {Metadata} from "next";
 import {Barlow_Condensed} from "next/font/google";
 import "../globals.scss";
+import Link from "next/link";
+import Header from "@/components/header";
 
 const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
@@ -50,7 +52,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={barlowCondensed.className}>{children}</body>
+      <body className={barlowCondensed.className}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

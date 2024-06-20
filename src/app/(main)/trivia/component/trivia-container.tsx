@@ -153,7 +153,7 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
   }, [nextQuestion, prevQuestion, setTriviaMode]);
 
   return (
-    <div className="flex py-14 items-center">
+    <div className="flex pb-14 items-center">
       <div className="w-[600px] max-w-full mx-auto px-4">
         <div className="text-center mb-7 text-4xl">
           Daily Trivia Corner
