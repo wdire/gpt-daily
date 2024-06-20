@@ -1,4 +1,4 @@
-import {DBCreateTrivia, GPTGenerateTrivia} from "@/actions/trivia.action";
+import {DBCreateTrivia, GPTGenerateTrivia} from "@/app/(main)/trivia/actions/trivia.action";
 import type {NextRequest} from "next/server";
 
 export async function GET(request: NextRequest) {

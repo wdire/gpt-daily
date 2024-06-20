@@ -1,8 +1,11 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
-import "./globals.scss";
+import {Barlow_Condensed} from "next/font/google";
+import "../globals.scss";
 
-const inter = Inter({subsets: ["latin"]});
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600"],
+});
 
 export const metadata: Metadata = {
   title: "GPT Daily",
@@ -16,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={barlowCondensed.className}>{children}</body>
     </html>
   );
 }
