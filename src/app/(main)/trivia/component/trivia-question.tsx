@@ -24,7 +24,10 @@ const TriviaQuestion = ({
 
   return (
     <div className="w-full">
-      <div className="text-2xl md:text-4xl text-center mb-8 font-semibold rounded-xl">
+      <div
+        className="text-2xl md:text-4xl text-center mb-8 font-semibold rounded-xl touch-none"
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         {questionWithoutAnswer.question}
       </div>
 

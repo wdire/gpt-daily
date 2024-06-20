@@ -130,7 +130,6 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
         setTriviaMode("questions");
       }
     },
-    preventScrollOnSwipe: true,
   });
 
   useEffect(() => {
