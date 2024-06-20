@@ -24,7 +24,7 @@ const TriviaQuestion = ({
 
   return (
     <div className="w-full">
-      <div className="text-3xl md:text-4xl text-center mb-8 font-semibold rounded-xl">
+      <div className="text-2xl md:text-4xl text-center mb-8 font-semibold rounded-xl">
         {questionWithoutAnswer.question}
       </div>
 
@@ -42,9 +42,9 @@ const TriviaQuestion = ({
                     questionStat.selection !== null &&
                     questionStat.selection !== index &&
                     questionStat.correctIndex !== index,
-                  "!bg-green-500": questionStat.correctIndex === index,
+                  "!bg-green-500/80": questionStat.correctIndex === index,
 
-                  "!bg-red-500": questionStat.selection === index && !questionStat.correct,
+                  "!bg-red-500/80": questionStat.selection === index && !questionStat.correct,
                 },
               )}
               onClick={() => {
