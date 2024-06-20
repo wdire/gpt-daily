@@ -1,8 +1,13 @@
 "use client";
 
 import {RightIcon} from "@/components/icons";
-import {useRef, useState} from "react";
-import {TriviaFnType, TriviaQuestionFnType, TriviaQuestionStat} from "@/types/trivia.type";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {
+  TriviaFnType,
+  TriviaModeType,
+  TriviaQuestionFnType,
+  TriviaQuestionStat,
+} from "@/types/trivia.type";
 import {cn} from "@/lib/cn";
 import TriviaQuestion from "./trivia-question";
 import TriviaResults from "./trivia-results";
@@ -13,9 +18,15 @@ type TriviaContainerProps = {
 };
 
 const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerProps) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, _setCurrentQuestionIndex] = useState(0);
+  const currentQuestionIndexRef = useRef(0);
 
-  const [questionStats, setQuestionStats] = useState<TriviaQuestionStat[]>(
+  const setCurrentQuestionIndex = (num: number) => {
+    _setCurrentQuestionIndex(num);
+    currentQuestionIndexRef.current = num;
+  };
+
+  const [questionStats, _setQuestionStats] = useState<TriviaQuestionStat[]>(
     Array(questionsWithoutAnswers.length)
       .fill({})
       .map(() => {
@@ -26,28 +37,49 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
         };
       }),
   );
+  const questionStatsRef = useRef<TriviaQuestionStat[]>(questionStats);
+
+  const setQuestionStats = (newQuestionStats: TriviaQuestionStat[]) => {
+    _setQuestionStats(newQuestionStats);
+    questionStatsRef.current = newQuestionStats;
+  };
 
   const autoNextTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const [triviaMode, setTriviaMode] = useState<"questions" | "results">("questions");
+  const [triviaMode, _setTriviaMode] = useState<TriviaModeType>("questions");
+  const triviaModeRef = useRef<TriviaModeType>(triviaMode);
 
-  const nextQuestion = () => {
-    if (currentQuestionIndex + 1 < questionsWithoutAnswers.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const setTriviaMode = useCallback(
+    (newTriviaMode: TriviaModeType) => {
+      if (questionStatsRef.current[questionsWithoutAnswers.length - 1].selection !== null) {
+        _setTriviaMode(newTriviaMode);
+        triviaModeRef.current = newTriviaMode;
+      }
+    },
+    [questionsWithoutAnswers.length],
+  );
+
+  const nextQuestion = useCallback(() => {
+    if (
+      currentQuestionIndexRef.current + 1 < questionsWithoutAnswers.length &&
+      questionStatsRef.current?.[currentQuestionIndexRef.current]?.selection !== null &&
+      triviaModeRef.current === "questions"
+    ) {
+      setCurrentQuestionIndex(currentQuestionIndexRef.current + 1);
       if (autoNextTimeoutRef.current) {
         clearTimeout(autoNextTimeoutRef.current);
       }
     }
-  };
+  }, [questionsWithoutAnswers.length]);
 
-  const prevQuestion = () => {
-    if (currentQuestionIndex - 1 >= 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+  const prevQuestion = useCallback(() => {
+    if (currentQuestionIndexRef.current - 1 >= 0 && triviaModeRef.current === "questions") {
+      setCurrentQuestionIndex(currentQuestionIndexRef.current - 1);
       if (autoNextTimeoutRef.current) {
         clearTimeout(autoNextTimeoutRef.current);
       }
     }
-  };
+  }, []);
 
   const questionSelectAnswer: TriviaQuestionFnType["questionSelectAnswer"] = async ({
     optionIndex,
@@ -58,19 +90,18 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
       questionIndex: currentQuestionIndex,
     });
 
-    setQuestionStats((prevState) => {
-      const newState = [...prevState];
-      newState[currentQuestionIndex] = {
-        ...newState[currentQuestionIndex],
-        correct: question.answer_index === optionIndex,
-        selection: optionIndex,
-        correctIndex: question.answer_index,
-      };
-      return newState;
-    });
+    const newQuestonStats = [...questionStats];
+    newQuestonStats[currentQuestionIndex] = {
+      ...newQuestonStats[currentQuestionIndex],
+      correct: question.answer_index === optionIndex,
+      selection: optionIndex,
+      correctIndex: question.answer_index,
+    };
 
-    if (currentQuestionIndex === questionsWithoutAnswers.length - 1) {
-      setTimeout(() => {
+    setQuestionStats(newQuestonStats);
+
+    if (currentQuestionIndexRef.current === questionsWithoutAnswers.length - 1) {
+      autoNextTimeoutRef.current = setTimeout(() => {
         setTriviaMode("results");
       }, 1500);
     } else {
@@ -85,6 +116,26 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
   const triviaQuestionFn: TriviaQuestionFnType = {
     questionSelectAnswer,
   };
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.code === "ArrowRight" || e.code === "KeyD") {
+        nextQuestion();
+      } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+        prevQuestion();
+      } else if (e.code === "ArrowDown" || e.code === "KeyS") {
+        setTriviaMode("results");
+      } else if (e.code === "ArrowUp" || e.code === "KeyW") {
+        setTriviaMode("questions");
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [nextQuestion, prevQuestion, setTriviaMode]);
 
   return (
     <div className="flex py-14 items-center">

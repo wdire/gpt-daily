@@ -11,3 +11,5 @@ export type TriviaQuestionStat = {
   correct: boolean | null;
   correctIndex: number | null;
 };
+
+export type TriviaModeType = "questions" | "results";
