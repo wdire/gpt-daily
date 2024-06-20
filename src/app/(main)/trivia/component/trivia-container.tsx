@@ -9,6 +9,7 @@ import {
   TriviaQuestionStat,
 } from "@/types/trivia.type";
 import {cn} from "@/lib/cn";
+import {useSwipeable} from "react-swipeable";
 import TriviaQuestion from "./trivia-question";
 import TriviaResults from "./trivia-results";
 
@@ -117,6 +118,20 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
     questionSelectAnswer,
   };
 
+  const {ref: containerSwipeableRef} = useSwipeable({
+    onSwiped: (e) => {
+      if (e.dir === "Left") {
+        nextQuestion();
+      } else if (e.dir === "Right") {
+        prevQuestion();
+      } else if (e.dir === "Up") {
+        setTriviaMode("results");
+      } else if (e.dir === "Down") {
+        setTriviaMode("questions");
+      }
+    },
+  });
+
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === "ArrowRight" || e.code === "KeyD") {
@@ -206,7 +221,7 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
             </button>
           </div>
         </div>
-        <div className="overflow-hidden px-1 pb-1">
+        <div className="overflow-hidden px-1 pb-1" ref={containerSwipeableRef}>
           <div
             className={cn(
               "w-full flex-col gap-16 transition-transform duration-500 ease-in-out relative",
