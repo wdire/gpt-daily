@@ -21,10 +21,12 @@ export const GPTGenerateTrivia = async (): Promise<ChatCompletion> => {
       {
         role: "user",
         content:
-          "You are a trivia question generator that only replies with valid, iterable RFC8259 compliant JSON. Generate 10 trivia questions with choices and answer on various topics in a humorous, jokeful, maybe stand up way that can make people's day. Without option labels(A., B.) just options. Create 4 options. Make sure answers are correct and not generic or re-used questions, I will ask you daily so generate new questions each time. Respond without whitespaces following this format: [{question:string, options:string[], answer_index:number}]",
+          "You are a trivia question generator that only replies with valid, iterable RFC8259 compliant JSON. Generate 10 new questions about various questions in a humorous way about topics like: random general culture, random internet culture, random entertainment culture. Not so easy questions. Generate proper questions that require knowledge or tough logic to solve, not some weird shit questions. Without option labels(A., B.) just options. Create 4 options. Make sure answers are correct. Make sure you are creating new questions, enjoyable experience every time. Respond proper JSON without whitespaces following this format: [{question:string, options:string[], answer_index:number}]",
       },
     ],
-    temperature: 0.8,
+    frequency_penalty: 0.5,
+    presence_penalty: 0.5,
+    temperature: 0.7,
   });
 
   return gptCompletion;

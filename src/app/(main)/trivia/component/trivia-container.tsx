@@ -245,7 +245,7 @@ const TriviaContainer = ({questionsWithoutAnswers, triviaFn}: TriviaContainerPro
                 transform: `translateX(calc(-${currentQuestionIndex}00% - ${currentQuestionIndex * 64}px))`,
               }}
             >
-              {questionsWithoutAnswers.map((question, index) => (
+              {questionsWithoutAnswers?.map((question, index) => (
                 <div
                   key={index}
                   className={cn("w-full flex-shrink-0 transition-all duration-1000 visible", {

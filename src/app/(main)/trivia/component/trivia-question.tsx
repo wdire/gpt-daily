@@ -32,7 +32,7 @@ const TriviaQuestion = ({
       </div>
 
       <div className="flex flex-col gap-3.5">
-        {questionWithoutAnswer.options.map((option, index) => {
+        {questionWithoutAnswer?.options?.map((option, index) => {
           return (
             <button
               key={`o_${index}`}
