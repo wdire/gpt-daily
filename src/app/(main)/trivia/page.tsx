@@ -15,7 +15,14 @@ const TriviaPage = async () => {
   const dailyTriviaWithoutAnswers = removeTriviaAnswers(dailyTrivia?.questions || []);
 
   if (!dailyTrivia?.questions?.length) {
-    return null;
+    return (
+      <main className="bg-neutral-100">
+        <div className="text-center text-xl">
+          <div>There is no Trivia data good enough for you 😔</div>{" "}
+          <div>There must be a problem.</div>
+        </div>
+      </main>
+    );
   }
 
   const getQuestion: TriviaFnType["getQuestion"] = async ({
