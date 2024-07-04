@@ -6,7 +6,7 @@ Here you will find different kinds of apps that its content daily generated, upd
 
 In according to run this app on your local, you need to provide these environment variables:
 
-1. Database: `DATABASE_URL`, `DIRECT_URL`. I've used Supabase - PostgreSQL, Prisma supports other databases but it could require small sweaks on `schema.prisma`.
+1. Database: `DATABASE_URL`, `DIRECT_URL`. I've used Supabase - PostgreSQL, Prisma supports other databases but it could require small tweaks on `schema.prisma`.
 
 2. AI Tokens: You can create respective ai token's from their dashboard.
 
