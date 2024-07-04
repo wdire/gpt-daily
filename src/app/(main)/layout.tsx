@@ -1,7 +1,6 @@
 import type {Metadata} from "next";
 import {Barlow_Condensed} from "next/font/google";
 import "../globals.scss";
-import Link from "next/link";
 import Header from "@/components/header";
 
 const barlowCondensed = Barlow_Condensed({

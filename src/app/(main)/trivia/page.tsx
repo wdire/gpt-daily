@@ -1,7 +1,6 @@
 import {getDailyTrivia} from "@/app/(main)/trivia/actions/trivia.action";
 import {TriviaFnType} from "@/types/trivia.type";
 import {Metadata} from "next";
-import {redirect} from "next/navigation";
 import TriviaContainer from "./component/trivia-container";
 import {removeTriviaAnswers} from "./utils/removeTriviaAnswers";
 

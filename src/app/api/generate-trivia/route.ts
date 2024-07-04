@@ -1,4 +1,5 @@
-import {DBCreateTrivia, GPTGenerateTrivia} from "@/app/(main)/trivia/actions/trivia.action";
+import {DBCreateTrivia} from "@/app/(main)/trivia/actions/trivia.action";
+import {AIGenerateTrivia} from "@/app/(main)/trivia/actions/trivia.ai";
 import type {NextRequest} from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -10,21 +11,21 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const triviaResponse = await GPTGenerateTrivia();
+    const triviaAIResponse = await AIGenerateTrivia({ai: "gemini"});
 
-    console.info("CHATGPT TRIVIA RESPONSE:", triviaResponse);
-
-    if (!triviaResponse.choices?.[0].message.content) {
-      console.error("Trivia Gpt no choice content", triviaResponse);
-      throw new Error("Trivia Gpt no choice content");
+    if (!triviaAIResponse.success) {
+      return new Response(
+        typeof triviaAIResponse.error === "string"
+          ? triviaAIResponse.error
+          : "Internal Server Error",
+        {
+          status: 500,
+        },
+      );
     }
 
-    const triviaResponseJson = JSON.parse(
-      triviaResponse.choices[0].message.content,
-    ) as PrismaJson.TriviaQuestion[];
-
-    if (await DBCreateTrivia(triviaResponseJson)) {
-      return Response.json({success: true, triviaResponse});
+    if (await DBCreateTrivia(triviaAIResponse.content)) {
+      return Response.json({success: true, triviaResponse: triviaAIResponse.content});
     }
     throw Error("Trivia couldn't create prisma");
   } catch (err) {

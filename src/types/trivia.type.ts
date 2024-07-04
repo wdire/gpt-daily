@@ -13,3 +13,16 @@ export type TriviaQuestionStat = {
 };
 
 export type TriviaModeType = "questions" | "results";
+
+export type TriviaAI = "chatgpt" | "gemini";
+
+export type TriviaAIResponse = {ai: TriviaAI} & (
+  | {
+      success: true;
+      content: PrismaJson.TriviaQuestion[];
+    }
+  | {
+      success: false;
+      error: unknown;
+    }
+);

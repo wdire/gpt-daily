@@ -15,6 +15,8 @@ declare global {
       OPENAI_ORG: string;
       OPENAI_PROJECT: string;
 
+      GOOGLE_GEMINI_TOKEN: string;
+
       CRON_SECRET: string;
     }
   }
